@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Learn React
+This repository is intended for learning at the following sites
+https://ja.react.dev/learn
+
 ## Available Scripts
 
 In the project directory, you can run:
