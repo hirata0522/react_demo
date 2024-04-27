@@ -1,0 +1,17 @@
+{
+    "user1": {
+        "username": "Aさん",
+        "update_time": "2024/4/27/13:00",
+        "status":"学内"
+    },
+    "user2": {
+        "username": "Bさん",
+        "update_time": "2024/4/27/13:15",
+        "status":"学内"
+    },
+    "user3": {
+        "username": "Cさん",
+        "update_time": "2024/4/27/20:00",
+        "status":"学外"
+    }
+}
