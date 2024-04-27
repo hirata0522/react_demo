@@ -8,42 +8,61 @@ function App() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const response = await fetch('http://localhost:6000/user4');
-        // const response = await fetch('./user1.json');
-        // const response = await fetch("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users/");
-        const response = await fetch("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users", {
-    headers: {
-        "ngrok-skip-browser-warning": "true",
-    }
-})
-//         const  response = await axios.post("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users", {
-//     headers: {
-//         "ngrok-skip-browser-warning": "true",
-//     }
-// },{id:2,user_name:"User4",status:"学外",updated_at:"2024/4/28"})
-        // const responseBody = await response.text(); // レスポンスボディをテキストとして取得
-        // console.log(responseBody); // レスポンス内容をコンソールから確認
-
-        // console.log(response);
-
-        // if (!response.ok) {
-        //   throw new Error('Network response was not ok');
-        // }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchData();
   }, []);
-  
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users", {
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const jsonData = await response.json();
+      setData(jsonData);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const postData = async () => {
+    try {
+      const newData = {
+        user_name: "User5",
+        status: "学内",
+      };
+
+      const response = await fetch("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users", {
+        method: 'POST',
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // データを再読み込み
+      fetchData();
+    } catch (error) {
+      setError(error);
+    }
+  };
+
+  const handlePostData = () => {
+    postData();
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -65,10 +84,10 @@ function App() {
           <p>Last Update : {item.updated_at}</p>
         </div>
       ))}
+
+      <button onClick={handlePostData}>Add New Data</button>
     </div>
   );
 }
-
-
 
 export default App;
