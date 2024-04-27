@@ -1,152 +1,74 @@
-// import React, { useState, useEffect } from 'react';
-// import PersonIcon from '@mui/icons-material/PersonAdd';
-
-// function App() {
-//   const [data, setData] = useState(null);
-//   // const [data, setState] = useState(null);
-
-//   useEffect(() => {
-//     // JSONファイルのパス
-//     // const jsonFilePath = './test.json';
-//     const jsonFilePath = 'https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users';
-
-//     // JSONファイルを取得する関数
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch(jsonFilePath);
-//         const jsonData = await response.json();
-//         setData(jsonData);
-//       } catch (error) {
-//         console.error('Error fetching JSON data:', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-//   // fetchTasks(){
-//   //   fetch("http://localhost:6000/user1") // データを取得しに行く
-//   //   .then( response => response.json() ) // json型のレスポンスをオブジェクトに変換する
-//   //   .then( json => { // オブジェクトに変換したレスポンスを受け取り、
-//   //     this.setState({ tasks: json }) // Stateを更新する
-//   //   })
-//   // }
-
-//   return (
-//     <div>
-//       <h1>JSONファイルの表示</h1>
-//       <PersonIcon />
-//       {data ? (
-//         <div>
-//           <h2>{data.user_name}</h2>
-//           <p>{data.status}</p>
-//           {/* <p>{data.user1.update_time}</p>
-//           <h2>{data.user2.username}</h2>
-//           <p>{data.user2.status}</p>
-//           <p>{data.user2.update_time}</p>
-//           <h2>{data.user3.username}</h2>
-//           <p>{data.user3.status}</p>
-//           <p>{data.user3.update_time}</p> */}
-//         </div>
-//       ) : (
-//         <p>Loading...</p>
-//       )}
-//     </div>
-//   );
-
-// }
-
-// export default App;
-
-
-// import React, { useState, useEffect } from 'react';
-// import PersonIcon from '@mui/icons-material/PersonAdd';
-
-// function App() {
-//   const [data, setData] = useState(null);
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch('http://localhost:6000/user1');
-//         const jsonData = await response.json();
-//         setData(jsonData);
-//       } catch (error) {
-//         console.error('Error fetching JSON data:', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>JSONファイルの表示</h1>
-//       <PersonIcon />
-//       {data ? (
-//         <div>
-//           <h2>{data.user1.username}</h2>
-//           <p>{data.user1.status}</p>
-//           <p>{data.user1.update_time}</p>
-//           {/* <h2>{data.user2.username}</h2>
-//           <p>{data.user2.status}</p>
-//           <p>{data.user2.update_time}</p>
-//           <h2>{data.user3.username}</h2>
-//           <p>{data.user3.status}</p>
-//           <p>{data.user3.update_time}</p> */}
-//         </div>
-//       ) : (
-//         <p>Loading...</p>
-//       )}
-//     </div>
-//   );
-
-
-// }
-
-// export default App;
-
-
 import React, { useState, useEffect } from 'react';
 import PersonIcon from '@mui/icons-material/PersonAdd';
 
 function App() {
+  
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const jsonFilePath = 'https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users';
-
     const fetchData = async () => {
       try {
-        const response = await fetch(jsonFilePath);
+        // const response = await fetch('http://localhost:6000/user4');
+        // const response = await fetch('./user1.json');
+        // const response = await fetch("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users/");
+        const response = await fetch("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users", {
+    headers: {
+        "ngrok-skip-browser-warning": "true",
+    }
+})
+//         const  response = await axios.post("https://73a6-240b-c010-4e3-64a3-b169-15c7-d6bc-38f7.ngrok-free.app/users", {
+//     headers: {
+//         "ngrok-skip-browser-warning": "true",
+//     }
+// },{id:2,user_name:"User4",status:"学外",updated_at:"2024/4/28"})
+        // const responseBody = await response.text(); // レスポンスボディをテキストとして取得
+        // console.log(responseBody); // レスポンス内容をコンソールから確認
+
+        // console.log(response);
+
+        // if (!response.ok) {
+        //   throw new Error('Network response was not ok');
+        // }
         const jsonData = await response.json();
         setData(jsonData);
       } catch (error) {
-        console.error('Error fetching JSON data:', error);
+        setError(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []);
-  console.log();
+  
+
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div>
       <h1>JSONファイルの表示</h1>
-      <PersonIcon />
-
       
-      
-      {data ? (
-        <div>
-          <h2>{data.user_name}</h2>
-          <p>{data.status}</p>
+      {data && data.map((item, index) => (
+        <div key={index}>
+          <h2><PersonIcon /> ID : {item.id}</h2>
+          <p>User Name : {item.user_name}</p>
+          <p>Status : {item.status}</p>
+          <p>Last Update : {item.updated_at}</p>
         </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+      ))}
     </div>
   );
-
 }
+
+
 
 export default App;
