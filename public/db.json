@@ -12,6 +12,11 @@
     "user3": {
         "username": "Cさん",
         "update_time": "2024/4/27/20:00",
-        "status":"ああああ"
+        "status":"学外"
+    },
+    "user4": {
+        "username": "Dさん",
+        "update_time": "2024/4/27/20:55",
+        "status":"学内or学外"
     }
 }
